@@ -62,6 +62,7 @@ void serialReciver()
     }
     if (index < 2)
       return;
+    disableSwapWindowsTime = millis();
     uint16_t command = bytesToUint16t(bufferRead[0], bufferRead[1]);
     switch (command)
     {
@@ -151,8 +152,9 @@ void swapWindows()
   };
   if (currentMillis - disableSwapWindowsTime < deviceConfig.delayAfterInput || !swapRealTime) {
     step = 0;
-    Keyboard.release(keys[currentWindow]);
+    Keyboard.releaseAll();
     currentWindow = 0;
+    lastActionTime = currentMillis;
     return;
   }
 
